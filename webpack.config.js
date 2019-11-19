@@ -2,7 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const alias = { '~': `${__dirname}/src` };
+
 module.exports = {
+
   entry: {
     app: './src/main.ts',
     vendors: ['phaser']
@@ -21,6 +24,7 @@ module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
+    alias,
     extensions: [ '.ts', '.tsx', '.js' ]
   },
 
@@ -33,7 +37,16 @@ module.exports = {
 
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
-    https: true
+    // https: true
+
+    proxy: {
+      '/api': {
+        pathRewrite: { '^/api' : '' },
+        target: 'http://localhost:18081',
+        ws: false,
+        changeOrigin: true,
+      },
+    },
   },
 
   plugins: [
@@ -63,5 +76,5 @@ module.exports = {
         }
       }
     }
-  }
+  },
 };

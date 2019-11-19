@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server --port 18080"
   },
   "dependencies": {
     "phaser": "^3.20.1"

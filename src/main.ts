@@ -4,7 +4,8 @@ import Scenes from './scenes';
 const gameConfig: Phaser.Types.Core.GameConfig = {
   title: 'Sample',
 
-  type: Phaser.AUTO,
+  // type: Phaser.AUTO,
+  type: Phaser.CANVAS,
 
   scale: {
     width: window.innerWidth,

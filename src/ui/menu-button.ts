@@ -13,6 +13,7 @@ export class MenuButton extends Phaser.GameObjects.Rectangle {
     this.setOrigin(0, 0);
 
     this.label = scene.add.text(x + padding, y + padding, text).setFontSize(18).setAlign('center');
+    this.label.depth = 101;
 
     const labelWidth = this.label.width + padding;
     const labelHeight = this.label.height + padding;
@@ -30,6 +31,7 @@ export class MenuButton extends Phaser.GameObjects.Rectangle {
       this.on('pointerup', onClick);
     }
 
+    this.depth = 100;
     this.enterMenuButtonRestState();
   }
 
