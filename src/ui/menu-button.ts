@@ -33,6 +33,7 @@ export class MenuButton extends Phaser.GameObjects.Rectangle {
 
     this.depth = 100;
     this.enterMenuButtonRestState();
+    this.setScrollFactor(0);
   }
 
   private enterMenuButtonHoverState() {
