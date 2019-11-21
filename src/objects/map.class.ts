@@ -225,9 +225,9 @@ export class Map extends Phaser.GameObjects.Image {
       if (this.origDragPoint) {
       // move the camera by the amount the mouse has moved since last update
       this.scene.cameras.main.scrollX +=
-        this.origDragPoint.x - this.scene.game.input.activePointer.position.x;
+        (this.origDragPoint.x - this.scene.game.input.activePointer.position.x) / this.zoom_ratio;
       this.scene.cameras.main.scrollY +=
-        this.origDragPoint.y - this.scene.game.input.activePointer.position.y;
+        (this.origDragPoint.y - this.scene.game.input.activePointer.position.y) / this.zoom_ratio;
       } // set new drag origin to current position
       this.origDragPoint = this.scene.game.input.activePointer.position.clone();
     } else {
