@@ -1,15 +1,21 @@
+import debounce from 'lodash/debounce'
 import * as Phaser from 'phaser';
 import Scenes from './scenes';
 
 const gameConfig: Phaser.Types.Core.GameConfig = {
-  title: 'Sample',
+  title: 'DCNS',
 
   // type: Phaser.AUTO,
   type: Phaser.CANVAS,
 
   scale: {
-    width: window.innerWidth,
-    height: window.innerHeight,
+    mode: Phaser.Scale.RESIZE,
+    // mode: Phaser.Scale.FIT,
+    // mode: Phaser.Scale.CENTER_BOTH,
+    // width: window.innerWidth,
+    // height: window.innerHeight,
+    // autoCenter: Phaser.Scale.CENTER_BOTH,
+    autoCenter: Phaser.Scale.RESIZE,
   },
 
   scene: Scenes,
@@ -27,6 +33,6 @@ const gameConfig: Phaser.Types.Core.GameConfig = {
 
 export const game = new Phaser.Game(gameConfig);
 
-window.addEventListener('resize', () => {
-  game.scale.refresh();
-});
+window.addEventListener('resize', debounce(() => {
+  setTimeout(() => game.scale.refresh(), 10)
+}, 33));
