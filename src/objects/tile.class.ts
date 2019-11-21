@@ -27,6 +27,7 @@ export class Tile extends Phaser.GameObjects.Image {
 
     this.initVariables();
     this.initImage();
+    this.setInteractive();
     this.scene.add.existing(this);
   }
 

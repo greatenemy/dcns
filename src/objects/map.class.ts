@@ -1,9 +1,8 @@
 import { RawMap, RawTile, TileUuid } from '~/types'
 import { Tile } from '~/objects/tile.class'
 
-// type PhaserTileMap = {
-//   [uuid: string]: Phaser.GameObjects.Image;
-// }
+//  The pointer has to move 16 pixels before it's considered as a drag
+const dragDistanceThreshold = 16;
 
 /**
  * @todo this should probably be a Container instead of an Image
@@ -32,6 +31,7 @@ export class Map extends Phaser.GameObjects.Image {
   zoom_ratio: number;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   bg_img: Phaser.GameObjects.TileSprite;
+  origDragPoint: any;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.key);
@@ -67,8 +67,13 @@ export class Map extends Phaser.GameObjects.Image {
   }
 
   create(): void {
-    this.bg_img = this.scene.add.tileSprite(400, 300, 1600, 1600, 'map_bg_seemless');
+    // this.bg_img = this.scene.add.tileSprite(400, 300, 1600, 1600, 'map_bg_seemless');
+    this.bg_img = new Phaser.GameObjects.TileSprite(this.scene, 400, 300, 1600, 1600, 'map_bg_seemless')
+    this.scene.add.existing(this.bg_img)
     this.bg_img.alpha = 0.5
+    // this.bg_img.setInteractive();
+    // this.scene.input.setDraggable(this.bg_img);
+
     // bg_img.setTintFill(white, white, white, white)
     this.cursorKeys = this.scene.input.keyboard.createCursorKeys();
     // this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -108,7 +113,39 @@ export class Map extends Phaser.GameObjects.Image {
       });
       this.scene.add.existing(game_object)
       this.tiles.push(game_object)
+
+      // console.log(this.input);
+
+      // this.scene.input.setDraggable(game_object);
     }
+    // this.scene.input.setDraggable(this.bg_img);
+
+    // this.scene.input.dragDistanceThreshold = dragDistanceThreshold;
+
+    // this.scene.input.on('dragstart', (pointer, gameObject) => {
+    //     console.log('dragstart');
+    //     // gameObject.setTint(0xff0000);
+    // });
+
+    // this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+    //   console.log('drag');
+    //   // console.log('drag', { diffX: dragX - gameObject.x, diffY: dragY - gameObject.x });
+    //   this.pan_offset_x += Math.round((dragX - gameObject.x) / 3)
+    //   this.pan_offset_y += Math.round((dragY - gameObject.y) / 3)
+    //   // this.pan_acceleration_x += Math.round((dragX - gameObject.x) / 100)
+    //   // this.pan_acceleration_y += Math.round((dragY - gameObject.y) / 100)
+    //     // gameObject.x = dragX;
+    //     // gameObject.y = dragY;
+
+    // });
+
+    // this.scene.input.on('dragend', (pointer, gameObject) => {
+    //     console.log('dragend');
+
+    //     // gameObject.clearTint();
+
+    // });
+
   }
 
   update(): void {
@@ -182,6 +219,19 @@ export class Map extends Phaser.GameObjects.Image {
       this.zoom_level = Math.min(max_zoom_in, this.zoom_level + zoom_interval);
       this.zoom_ratio = Math.exp(this.zoom_level)
       this.scene.cameras.main.setZoom(this.zoom_ratio);
+    }
+
+    if (this.scene.game.input.activePointer.isDown) {
+      if (this.origDragPoint) {
+      // move the camera by the amount the mouse has moved since last update
+      this.scene.cameras.main.scrollX +=
+        this.origDragPoint.x - this.scene.game.input.activePointer.position.x;
+      this.scene.cameras.main.scrollY +=
+        this.origDragPoint.y - this.scene.game.input.activePointer.position.y;
+      } // set new drag origin to current position
+      this.origDragPoint = this.scene.game.input.activePointer.position.clone();
+    } else {
+      this.origDragPoint = null;
     }
   }
 

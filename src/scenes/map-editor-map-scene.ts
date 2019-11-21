@@ -34,34 +34,14 @@ export class MapEditorMapScene extends Phaser.Scene {
       scene: this,
       x: this.sys.canvas.width / 2 - 150,
       y: this.sys.canvas.height / 2,
-      // this doesn't mean anything, just that the abovce crashed
-      // x: document.getElementById("content").clientWidth,
-      // y: document.getElementById("content").clientHeight,
       key: "map1",
     });
-    // this.mapeditorui1 = new MapEditorUi({
-    //   scene: this,
-    //   x: this.sys.canvas.width / 2 - 150,
-    //   y: this.sys.canvas.height / 2,
-    //   // this doesn't mean anything, just that the abovce crashed
-    //   // x: document.getElementById("content").clientWidth,
-    //   // y: document.getElementById("content").clientHeight,
-    //   key: "mapeditorui1",
-    // });
     this.map.preload();
-    // this.mapeditorui1.preload();
   }
   public update() {
     this.map.update();
-    // this.mapeditorui1.update();
-    // console.log('Scene.update')
-    // this.load.spritesheet('terrain', 'assets/spritesheets/terrain_hex.png', {
-    //   frameWidth: 120,
-    //   frameHeight: 139,
-    // });
   }
   public create() {
     this.map.create();
-    // this.mapeditorui1.create();
   }
 }
